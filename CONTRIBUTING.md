@@ -1,6 +1,6 @@
 # Contribution Guidelines
 
-Thank you for your interest in contributing to "my-pkg". # TODO: Remember to update the package name if it
+Thank you for your interest in contributing to "dev-kit-gh_mcp_server".
 changes.
 
 ## Prerequisites
