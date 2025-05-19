@@ -1,9 +1,9 @@
 [project]
-name = "my-pkg" # todo: change to your package name
+name = "dev-kit-gh-mcp-server"
 dynamic = ["version"]
-description = ""
+description = "A Model Context Protocol server for turning repositories into navigable MCP systems"
 authors = [
-    { name = "DanielAvdar", email = "66269169+DanielAvdar@users.noreply.github.com" }, # todo: change to your name and email
+    { name = "DanielAvdar", email = "66269169+DanielAvdar@users.noreply.github.com" },
 ]
 license = { text = "MIT" }
 readme = "README.md"
@@ -16,22 +16,41 @@ classifiers = [
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
 ]
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 
 keywords = [
-    "python"
+    "python",
+    "mcp",
+    "repository-navigation",
+    "code-exploration",
+    "code-structure",
+    "ast",
+    "tokenize"
 ]
-dependencies = []
+dependencies = [
+
+    "dev-kit-mcp-server>=0.1.0b0",
+    "PyGithub",
+
+]
+[project.optional-dependencies]
+github = [
+    "PyGithub",
+]
+[project.scripts]
+dev-kit-gh-mcp-server ="dev_kit_gh_mcp_server:run_server"
 
 [dependency-groups]
 dev = [
-    "pytest>=8.3.5",
+    "pytest>=7.1.2",
     "hypothesis>=6.23.3",
+    "pre-commit>=2.20.0",
+    "pre-commit-uv>=4",
     "pytest-cov>=4.0.0",
-    "pytest-asyncio>=0.26.0",
     "mypy==1.15.0",
     "pytest-parametrization>=2022",
-
+    "ruff>=0.8.2",
+    "pytest-asyncio>=0.23.5",
 ]
 docs = [
     "sphinx>=8.2.0; python_version >= '3.11'",
@@ -39,13 +58,12 @@ docs = [
     "sphinx-rtd-theme>=3.0.2",
 ]
 [tool.hatch.build.targets.sdist]
-only-include = ["my_pkg", ] # todo: change to your package name
+only-include = ["dev_kit_gh_mcp_server"]
 source = "."
 
 [tool.hatch.build.targets.wheel]
-only-include = ["my_pkg", ] # todo: change to your package name
+only-include = ["dev_kit_gh_mcp_server"]
 source = "."
-
 
 
 [build-system]
@@ -55,14 +73,14 @@ build-backend = "hatchling.build"
 [tool.hatch.version]
 source = "uv-dynamic-versioning"
 
-[project.optional-dependencies]
 
 [tool.ruff]
 line-length = 120
 include = ["pyproject.toml", "tests/**", ]
+exclude = ["tests/test_mcp_server.py", "tests/test_server.py"]
 
 [tool.ruff.lint]
-select = ["F", "B", "I", "F", "W", "E", "A", "N", "D","DOC"]
+select = ["F", "B", "I", "F", "W", "E", "A", "N", "D", "DOC"]
 
 fixable = ["ALL"]
 [tool.ruff.lint.per-file-ignores]
@@ -77,3 +95,16 @@ check_untyped_defs = true
 warn_redundant_casts = true
 warn_unused_ignores = true
 strict_optional = false
+
+[[tool.mypy.overrides]]
+module = [
+    "fastapi",
+    "fastapi.responses",
+    "fastapi_mcp",
+    "fastmcp",
+    "pydantic",
+    "starlette",
+    "starlette.responses",
+    "uvicorn"
+]
+ignore_missing_imports = true
