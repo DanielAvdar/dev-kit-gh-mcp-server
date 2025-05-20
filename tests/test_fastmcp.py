@@ -1,9 +1,10 @@
 from pathlib import Path
 
 import pytest
-from dev_kit_mcp_server import start_server
-from dev_kit_mcp_server.tools import __all__
 from fastmcp import Client
+
+from dev_kit_gh_mcp_server import start_server
+from dev_kit_gh_mcp_server.tools import __all__
 
 
 @pytest.fixture

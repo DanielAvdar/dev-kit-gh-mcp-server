@@ -371,7 +371,7 @@ docs = [
 
 [package.metadata]
 requires-dist = [
-    { name = "dev-kit-mcp-server", specifier = ">=0.1.0b0" },
+    { name = "dev-kit-mcp-server", specifier = ">=0.1.1b0" },
     { name = "pygithub" },
     { name = "pygithub", marker = "extra == 'github'" },
 ]
@@ -397,7 +397,7 @@ docs = [
 
 [[package]]
 name = "dev-kit-mcp-server"
-version = "0.1.0b0"
+version = "0.1.1b0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "fastmcp" },
@@ -405,9 +405,9 @@ dependencies = [
     { name = "mcp" },
     { name = "pygithub" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/d9/13/7eb644e8aa84516751dfe4f37afaa84ccae1e59ff154da90fcffcfb6293b/dev_kit_mcp_server-0.1.0b0.tar.gz", hash = "sha256:ea83d7a16d1d30528ef032208e007eebcbe209000652bf75bd1bb662043a8450", size = 13761, upload-time = "2025-05-19T21:46:07.38Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/7d/17/abc0b48d2410f4686aa40da9b6d1c68bc0c0461284e8658b5325d1238b62/dev_kit_mcp_server-0.1.1b0.tar.gz", hash = "sha256:893011bf4fe0154df2103d46b045e23fdfcc630baa50894d6c0d3a780136a1e6", size = 14246, upload-time = "2025-05-20T12:53:01.271Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/cd/5e/1277d34386766cb9896bb646b58151e3dd9fc47c0dee981056eddb693add/dev_kit_mcp_server-0.1.0b0-py3-none-any.whl", hash = "sha256:0f91a681656dcf5c601bae484a00ca63d67ce32a6b75db0a57b0d3f64e1db28d", size = 23699, upload-time = "2025-05-19T21:46:05.164Z" },
+    { url = "https://files.pythonhosted.org/packages/52/66/155b585458617c622ac8072962de285b5e565cc8d2bbfa82cf3c00d83e55/dev_kit_mcp_server-0.1.1b0-py3-none-any.whl", hash = "sha256:bf98d462cfc13d73e45b6c87623830f420aa4d11212801be07d60e85fe659383", size = 24887, upload-time = "2025-05-20T12:52:59.596Z" },
 ]
 
 [[package]]
