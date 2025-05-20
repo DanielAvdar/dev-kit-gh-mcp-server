@@ -22,6 +22,8 @@ from dev_kit_mcp_server.tools import (
     RenameOperation,
 )
 
+from .tools import __all__ as tools_names
+from . import tools as tool_msodule
 
 def start_server(root_dir: str = None) -> FastMCP:
     """Start the FastMCP server.
@@ -44,27 +46,14 @@ def start_server(root_dir: str = None) -> FastMCP:
     )
 
     # Create a list of tools to register
-    tools = [
-        # File system operations
-        MoveDirOperation(root_dir=root_dir),
-        CreateDirOperation(root_dir=root_dir),
-        RemoveFileOperation(root_dir=root_dir),
-        RenameOperation(root_dir=root_dir),
-        # Git operations
-        GitStatusOperation(root_dir=root_dir),
-        GitCommitOperation(root_dir=root_dir),
-        GitPushOperation(root_dir=root_dir),
-        GitPullOperation(root_dir=root_dir),
-        GitAddOperation(root_dir=root_dir),
-        GitCheckoutOperation(root_dir=root_dir),
-        # Make operations
-    ]
+    ops = [getattr(tool_msodule, tool_name)(root_dir=root_dir) for tool_name in tools_names]
+
 
     # Check if GitHub tools should be registered
 
     # Register all tools
     tool_factory = ToolFactory(fastmcp)
-    tool_factory(tools)
+    tool_factory(ops)
     return fastmcp
 
 
