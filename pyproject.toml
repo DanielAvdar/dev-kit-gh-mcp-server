@@ -33,10 +33,7 @@ dependencies = [
     "PyGithub",
 
 ]
-[project.optional-dependencies]
-github = [
-    "PyGithub",
-]
+
 [project.scripts]
 dev-kit-gh-mcp-server ="dev_kit_gh_mcp_server:run_server"
 
@@ -51,6 +48,7 @@ dev = [
     "pytest-parametrization>=2022",
     "ruff>=0.8.2",
     "pytest-asyncio>=0.23.5",
+    "mocket"
 ]
 docs = [
     "sphinx>=8.2.0; python_version >= '3.11'",

@@ -25,5 +25,3 @@ async def test_tool_with_client(fastmcp_server):
     async with Client(fastmcp_server) as client:
         result = await client.list_tools()
         assert len(result) == len(__all__)
-
-

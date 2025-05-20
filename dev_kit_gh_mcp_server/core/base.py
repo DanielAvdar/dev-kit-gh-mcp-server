@@ -23,12 +23,17 @@ class GitHubOperation(AsyncOperation):
     )
 
     def __post_init__(self):
-        """Post-initialization method to set up the GitHub repository."""
+        """Post-initialization method to set up the GitHub repository.
+
+        Raises:
+            ValueError: If GitHub token is not provided or if repository has no remote URL or multiple remote URLs.
+
+        """
         # Initialize the GitHub repository
         token = self.token or os.getenv("GITHUB_TOKEN")
-        if isinstance(token, str):
+        if not isinstance(token, str):
             raise ValueError("GitHub token is required. Set it as an environment variable or pass it as an argument.")
-        gh = Github(login_or_token=self.token or os.getenv("GITHUB_TOKEN"))
+        gh = Github(login_or_token=token)
         if self.root_dir_is_a_url():
             self._gh_repo = gh.get_repo(self.root_dir)
             return
