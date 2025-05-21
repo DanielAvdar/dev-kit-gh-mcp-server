@@ -327,15 +327,6 @@ wheels = [
 ]
 
 [[package]]
-name = "decorator"
-version = "5.2.1"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/43/fa/6d96a0978d19e17b68d634497769987b16c8f4cd0a7a05048bec693caa6b/decorator-5.2.1.tar.gz", hash = "sha256:65f266143752f734b0a7cc83c46f4618af75b8c5911b00ccb61d0ac9b6da0360", size = 56711, upload-time = "2025-02-24T04:41:34.073Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/4e/8c/f3147f5c4b73e7550fe5f9352eaa956ae838d5c51eb58e7a25b9f3e2643b/decorator-5.2.1-py3-none-any.whl", hash = "sha256:d316bb415a2d9e2d2b3abcc4084c6502fc09240e292cd76a76afc106a1c8e04a", size = 9190, upload-time = "2025-02-24T04:41:32.565Z" },
-]
-
-[[package]]
 name = "deprecated"
 version = "1.2.18"
 source = { registry = "https://pypi.org/simple" }
@@ -358,7 +349,6 @@ dependencies = [
 [package.dev-dependencies]
 dev = [
     { name = "hypothesis" },
-    { name = "mocket" },
     { name = "mypy" },
     { name = "pre-commit" },
     { name = "pre-commit-uv" },
@@ -367,6 +357,7 @@ dev = [
     { name = "pytest-cov" },
     { name = "pytest-parametrization" },
     { name = "python-dotenv" },
+    { name = "responses" },
     { name = "ruff" },
 ]
 docs = [
@@ -384,7 +375,6 @@ requires-dist = [
 [package.metadata.requires-dev]
 dev = [
     { name = "hypothesis", specifier = ">=6.23.3" },
-    { name = "mocket" },
     { name = "mypy", specifier = "==1.15.0" },
     { name = "pre-commit", specifier = ">=2.20.0" },
     { name = "pre-commit-uv", specifier = ">=4" },
@@ -393,6 +383,7 @@ dev = [
     { name = "pytest-cov", specifier = ">=4.0.0" },
     { name = "pytest-parametrization", specifier = ">=2022" },
     { name = "python-dotenv" },
+    { name = "responses" },
     { name = "ruff", specifier = ">=0.8.2" },
 ]
 docs = [
@@ -706,22 +697,6 @@ wheels = [
 ]
 
 [[package]]
-name = "mocket"
-version = "3.13.6"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "decorator" },
-    { name = "h11" },
-    { name = "puremagic" },
-    { name = "typing-extensions" },
-    { name = "urllib3" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/e8/07/794c80010dfeaefef830c55ff3f19ed65cc9c7df596550f394e125c447f4/mocket-3.13.6.tar.gz", hash = "sha256:bdc66ca445240372036a25b190fa1f042e09c10b77cf372edf6d57b0804fbf5b", size = 76051, upload-time = "2025-05-18T08:17:25.882Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/22/8a/69ea1e83fb96e8698ab1cb3bad2e5579f9d54d630a435ebab97de85d3548/mocket-3.13.6-py3-none-any.whl", hash = "sha256:6005f0cb87d5b146bc42aebff46fdfa29cb05cf94bf947c1a7309ddd8ccf7e8f", size = 28395, upload-time = "2025-05-18T08:17:24.327Z" },
-]
-
-[[package]]
 name = "mypy"
 version = "1.15.0"
 source = { registry = "https://pypi.org/simple" }
@@ -843,15 +818,6 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/b1/6c/c3c1d01698c8abb0b546defc0304971fa7fb2ba84ad35587b9dad095d73f/pre_commit_uv-4.1.4.tar.gz", hash = "sha256:3db606a79b226127b27dbbd8381b78c0e30de3ac775a8492c576a68e9250535c", size = 6493, upload-time = "2024-10-29T23:07:28.918Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/f1/70/1b65f9118ef64f6ffe5d57a67170bbff25d4f4a3d1cb78e8ed3392e16114/pre_commit_uv-4.1.4-py3-none-any.whl", hash = "sha256:7f01fb494fa1caa5097d20a38f71df7cea0209197b2564699cef9b3f3aa9d135", size = 5578, upload-time = "2024-10-29T23:07:27.128Z" },
-]
-
-[[package]]
-name = "puremagic"
-version = "1.29"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/d6/de/c9dbb741a2e0e657147c6125699e4a2a3b9003840fed62528e17c87c0989/puremagic-1.29.tar.gz", hash = "sha256:67c115db3f63d43b13433860917b11e2b767e5eaec696a491be2fb544f224f7a", size = 314734, upload-time = "2025-05-02T03:16:17.891Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/50/e3/6d0ad0dc83cf0871198a68d527c61e443c10509a93db1e1666be9d1bf9c6/puremagic-1.29-py3-none-any.whl", hash = "sha256:2c3cfcde77f0b1560f1898f627bd388421d2bd64ec94d8d25f400f7742a4f109", size = 43279, upload-time = "2025-05-02T03:16:16.407Z" },
 ]
 
 [[package]]
@@ -1166,6 +1132,20 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/63/70/2bf7780ad2d390a8d301ad0b550f1581eadbd9a20f896afe06353c2a2913/requests-2.32.3.tar.gz", hash = "sha256:55365417734eb18255590a9ff9eb97e9e1da868d4ccd6402399eaf68af20a760", size = 131218, upload-time = "2024-05-29T15:37:49.536Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/f9/9b/335f9764261e915ed497fcdeb11df5dfd6f7bf257d4a6a2a686d80da4d54/requests-2.32.3-py3-none-any.whl", hash = "sha256:70761cfe03c773ceb22aa2f671b4757976145175cdfca038c02654d061d6dcc6", size = 64928, upload-time = "2024-05-29T15:37:47.027Z" },
+]
+
+[[package]]
+name = "responses"
+version = "0.25.7"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "pyyaml" },
+    { name = "requests" },
+    { name = "urllib3" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/81/7e/2345ac3299bd62bd7163216702bbc88976c099cfceba5b889f2a457727a1/responses-0.25.7.tar.gz", hash = "sha256:8ebae11405d7a5df79ab6fd54277f6f2bc29b2d002d0dd2d5c632594d1ddcedb", size = 79203, upload-time = "2025-03-11T15:36:16.624Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/e4/fc/1d20b64fa90e81e4fa0a34c9b0240a6cfb1326b7e06d18a5432a9917c316/responses-0.25.7-py3-none-any.whl", hash = "sha256:92ca17416c90fe6b35921f52179bff29332076bb32694c0df02dcac2c6bc043c", size = 34732, upload-time = "2025-03-11T15:36:14.589Z" },
 ]
 
 [[package]]
