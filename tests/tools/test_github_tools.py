@@ -14,7 +14,7 @@ from dev_kit_gh_mcp_server.tools import ListCommitsOp, ListIssuesOp, ListPRsOp, 
 @pytest.fixture
 def mock_github_token():
     """Mock GitHub token for testing."""
-    with patch.dict(os.environ, {"GITHUB_TOKEN": "fake-token"}):
+    with patch.dict(os.environ, {"GITHUB_TOKEN": "github_pat_ads4stwegvq"}):
         yield
 
 
