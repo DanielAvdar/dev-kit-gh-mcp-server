@@ -1,6 +1,5 @@
-[//]: # todo replace dev-kit-gh_mcp_server with your package name
-[//]: # todo replace DanielAvdar with your github username
-# This is a template for creating a Python package repository for open source projects.
+
+# This project is github mcp server centered around one focused repository operations.
 
 [![PyPI - Python Version](https://img.shields.io/pypi/pyversions/dev-kit-gh_mcp_server)](https://pypi.org/project/dev-kit-gh_mcp_server/)
 [![version](https://img.shields.io/pypi/v/dev-kit-gh_mcp_server)](https://img.shields.io/pypi/v/dev-kit-gh_mcp_server)
