@@ -6,7 +6,7 @@ from unittest.mock import patch
 
 import pytest
 from mocket import mocketize
-from mocket.mockhttp import Entry
+from mocket.mocks.mockhttp import Entry
 
 from dev_kit_gh_mcp_server.tools import ListCommitsOp, ListIssuesOp, ListPRsOp, ListTagsOp
 
