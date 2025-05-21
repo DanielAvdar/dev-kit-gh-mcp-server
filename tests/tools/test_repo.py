@@ -1,4 +1,4 @@
-"""Tests for the GitHub Repository operations."""
+"""Tests for the GitHub Repository operations using responses for mocking."""
 
 from datetime import datetime
 from typing import Generator
@@ -7,10 +7,6 @@ from unittest.mock import MagicMock, patch
 import pytest
 import responses
 from github.GithubException import GithubException
-from github.Issue import Issue
-from github.PaginatedList import PaginatedList
-from github.PullRequest import PullRequest
-from github.Tag import Tag
 
 from dev_kit_gh_mcp_server.tools import (
     ListCommitsOp,
@@ -27,33 +23,53 @@ def mock_github_operation() -> Generator[MagicMock, None, None]:
         yield mock
 
 
-@pytest.fixture
-def mock_repo() -> MagicMock:
-    """Create a mock repository."""
-    repo = MagicMock()
-    repo.full_name = "test-owner/test-repo"
-    return repo
-
-
 @pytest.mark.asyncio
 @responses.activate
 async def test_list_issues_op_success(mock_github_operation: MagicMock) -> None:
-    """Test listing issues successfully."""
-    # Arrange
+    """Test listing issues successfully using responses."""
+    # Mock the GitHub API response for issues
+    issues_response = [
+        {
+            "number": 1,
+            "title": "Test Issue 1",
+            "state": "open",
+            "body": "This is a test issue",
+            "user": {"login": "testuser"},
+            "created_at": "2025-05-01T00:00:00Z",
+            "updated_at": "2025-05-02T00:00:00Z",
+        },
+        {
+            "number": 2,
+            "title": "Test Issue 2",
+            "state": "open",
+            "body": "This is another test issue",
+            "user": {"login": "anotheruser"},
+            "created_at": "2025-05-03T00:00:00Z",
+            "updated_at": "2025-05-04T00:00:00Z",
+        },
+    ]
+
+    # Add response mock for GitHub API
+    responses.add(
+        responses.GET,
+        "https://api.github.com/repos/test-owner/test-repo/issues",
+        json=issues_response,
+        status=200,
+    )
+
+    # Create operation instance and mock repo
     op = ListIssuesOp(root_dir="test-owner/test-repo", token="fake-token")
     op._gh_repo = MagicMock()
 
-    # Mock data
-    mock_issue1 = MagicMock(spec=Issue)
-    mock_issue1.number = 1
-    mock_issue1.title = "Test Issue 1"
+    # Mock issues
+    mock_issues = []
+    for issue_data in issues_response:
+        mock_issue = MagicMock()
+        mock_issue.number = issue_data["number"]
+        mock_issue.title = issue_data["title"]
+        mock_issue.state = issue_data["state"]
+        mock_issues.append(mock_issue)
 
-    mock_issue2 = MagicMock(spec=Issue)
-    mock_issue2.number = 2
-    mock_issue2.title = "Test Issue 2"
-
-    mock_issues = MagicMock()
-    mock_issues.__iter__.return_value = iter([mock_issue1, mock_issue2])
     op._gh_repo.get_issues.return_value = mock_issues
 
     # Act
@@ -73,19 +89,27 @@ async def test_list_issues_op_success(mock_github_operation: MagicMock) -> None:
 @pytest.mark.asyncio
 @responses.activate
 async def test_list_issues_op_failure(mock_github_operation: MagicMock) -> None:
-    """Test handling GitHub exception when listing issues."""
-    # Arrange
+    """Test handling GitHub API error when listing issues."""
+    # Mock the GitHub API response for issues with an error
+    error_response = {
+        "message": "API rate limit exceeded",
+        "documentation_url": "https://docs.github.com/rest/overview/resources-in-the-rest-api#rate-limiting",
+    }
+
+    responses.add(
+        responses.GET,
+        "https://api.github.com/repos/test-owner/test-repo/issues",
+        json=error_response,
+        status=403,
+    )
+
+    # Create operation instance
     op = ListIssuesOp(root_dir="test-owner/test-repo", token="fake-token")
     op._gh_repo = MagicMock()
 
-    # Create a custom exception with the expected error message
-    error_data = {"message": "API rate limit exceeded"}
-    GithubException(status=403, data=error_data, headers={})
-    # Create a wrapper exception with our specific error message
-    wrapper_exception = GithubException(
-        status=403, data=f"Failed to list issues: {error_data.get('message', '')}", headers={}
-    )
-    op._gh_repo.get_issues.side_effect = wrapper_exception
+    # Mock exception
+    exception = GithubException(status=403, data=f"Failed to list issues: {error_response['message']}", headers={})
+    op._gh_repo.get_issues.side_effect = exception
 
     # Act & Assert
     with pytest.raises(GithubException) as excinfo:
@@ -99,27 +123,47 @@ async def test_list_issues_op_failure(mock_github_operation: MagicMock) -> None:
 @pytest.mark.asyncio
 @responses.activate
 async def test_list_commits_op_success(mock_github_operation: MagicMock) -> None:
-    """Test listing commits successfully."""
-    # Arrange
+    """Test listing commits successfully using responses."""
+    # Mock the GitHub API response for commits
+    commits_response = [
+        {
+            "sha": "abc123",
+            "commit": {
+                "message": "First commit",
+                "author": {"name": "Test Author", "email": "test@example.com", "date": "2025-05-01T00:00:00Z"},
+            },
+        },
+        {
+            "sha": "def456",
+            "commit": {
+                "message": "Second commit",
+                "author": {"name": "Another Author", "email": "another@example.com", "date": "2025-05-02T00:00:00Z"},
+            },
+        },
+    ]
+
+    # Add response mock for GitHub API
+    responses.add(
+        responses.GET,
+        "https://api.github.com/repos/test-owner/test-repo/commits",
+        json=commits_response,
+        status=200,
+    )
+
+    # Create operation instance
     op = ListCommitsOp(root_dir="test-owner/test-repo", token="fake-token")
     op._gh_repo = MagicMock()
-    # Mock data
-    mock_commit1 = MagicMock()
-    mock_commit1.sha = "abc123"
-    mock_commit1.commit.message = "First commit"
-    mock_commit1.commit.author.name = "Test Author"
 
-    mock_commit2 = MagicMock()
-    mock_commit2.sha = "def456"
-    mock_commit2.commit.message = "Second commit"
-    mock_commit2.commit.author.name = "Another Author"
+    # Mock commits
+    mock_commits = []
+    for commit_data in commits_response:
+        mock_commit = MagicMock()
+        mock_commit.sha = commit_data["sha"]
+        mock_commit.commit.message = commit_data["commit"]["message"]
+        mock_commit.commit.author.name = commit_data["commit"]["author"]["name"]
+        mock_commits.append(mock_commit)
 
-    # For PaginatedList, we need to mock both __iter__ and direct returns
-    commits_list = [mock_commit1, mock_commit2]
-    mock_commits = MagicMock(spec=PaginatedList)
-    mock_commits.__iter__.return_value = iter(commits_list)
-    # Ensure the direct list conversion works
-    op._gh_repo.get_commits.return_value = commits_list
+    op._gh_repo.get_commits.return_value = mock_commits
 
     # Act
     since_date = datetime.now()
@@ -131,6 +175,7 @@ async def test_list_commits_op_success(mock_github_operation: MagicMock) -> None
     assert commits[0].sha == "abc123"
     assert commits[0].commit.message == "First commit"
     assert commits[1].sha == "def456"
+
     # Verify correct parameters were passed
     op._gh_repo.get_commits.assert_called_once_with(since=since_date)
 
@@ -138,17 +183,27 @@ async def test_list_commits_op_success(mock_github_operation: MagicMock) -> None
 @pytest.mark.asyncio
 @responses.activate
 async def test_list_commits_op_failure(mock_github_operation: MagicMock) -> None:
-    """Test handling GitHub exception when listing commits."""
-    # Arrange
+    """Test handling GitHub API error when listing commits."""
+    # Mock the GitHub API response for commits with an error
+    error_response = {
+        "message": "Repository not found",
+        "documentation_url": "https://docs.github.com/rest/reference/repos#get-a-repository",
+    }
+
+    responses.add(
+        responses.GET,
+        "https://api.github.com/repos/test-owner/test-repo/commits",
+        json=error_response,
+        status=404,
+    )
+
+    # Create operation instance
     op = ListCommitsOp(root_dir="test-owner/test-repo", token="fake-token")
     op._gh_repo = MagicMock()
 
-    # Create a custom exception with the expected error message
-    error_data = {"message": "Repository not found"}
-    wrapper_exception = GithubException(
-        status=404, data=f"Failed to list commits: {error_data.get('message', '')}", headers={}
-    )
-    op._gh_repo.get_commits.side_effect = wrapper_exception
+    # Mock exception
+    exception = GithubException(status=404, data=f"Failed to list commits: {error_response['message']}", headers={})
+    op._gh_repo.get_commits.side_effect = exception
 
     # Act & Assert
     with pytest.raises(GithubException) as excinfo:
@@ -162,25 +217,42 @@ async def test_list_commits_op_failure(mock_github_operation: MagicMock) -> None
 @pytest.mark.asyncio
 @responses.activate
 async def test_list_tags_op_success(mock_github_operation: MagicMock) -> None:
-    """Test listing tags successfully."""
-    # Arrange
+    """Test listing tags successfully using responses."""
+    # Mock the GitHub API response for tags
+    tags_response = [
+        {
+            "name": "v1.0.0",
+            "commit": {"sha": "abc123", "url": "https://api.github.com/repos/test-owner/test-repo/commits/abc123"},
+        },
+        {
+            "name": "v2.0.0",
+            "commit": {"sha": "def456", "url": "https://api.github.com/repos/test-owner/test-repo/commits/def456"},
+        },
+    ]
+
+    # Add response mock for GitHub API
+    responses.add(
+        responses.GET,
+        "https://api.github.com/repos/test-owner/test-repo/tags",
+        json=tags_response,
+        status=200,
+    )
+
+    # Create operation instance
     op = ListTagsOp(root_dir="test-owner/test-repo", token="fake-token")
     op._gh_repo = MagicMock()
-    # Mock data
-    mock_tag1 = MagicMock(spec=Tag)
-    mock_tag1.name = "v1.0.0"
-    mock_tag1.commit.sha = "abc123"
 
-    mock_tag2 = MagicMock(spec=Tag)
-    mock_tag2.name = "v2.0.0"
-    mock_tag2.commit.sha = "def456"
+    # Mock tags
+    mock_tags = []
+    for tag_data in tags_response:
+        mock_tag = MagicMock()
+        mock_tag.name = tag_data["name"]
+        mock_tag_commit = MagicMock()
+        mock_tag_commit.sha = tag_data["commit"]["sha"]
+        mock_tag.commit = mock_tag_commit
+        mock_tags.append(mock_tag)
 
-    # For PaginatedList, we need to mock both __iter__ and direct returns
-    tags_list = [mock_tag1, mock_tag2]
-    mock_tags = MagicMock(spec=PaginatedList)
-    mock_tags.__iter__.return_value = iter(tags_list)
-    # Ensure the direct list conversion works
-    op._gh_repo.get_tags.return_value = tags_list
+    op._gh_repo.get_tags.return_value = mock_tags
 
     # Act
     result = await op()
@@ -198,17 +270,27 @@ async def test_list_tags_op_success(mock_github_operation: MagicMock) -> None:
 @pytest.mark.asyncio
 @responses.activate
 async def test_list_tags_op_failure(mock_github_operation: MagicMock) -> None:
-    """Test handling GitHub exception when listing tags."""
-    # Arrange
+    """Test handling GitHub API error when listing tags."""
+    # Mock the GitHub API response for tags with an error
+    error_response = {
+        "message": "Internal server error",
+        "documentation_url": "https://docs.github.com/rest/reference/repos#list-repository-tags",
+    }
+
+    responses.add(
+        responses.GET,
+        "https://api.github.com/repos/test-owner/test-repo/tags",
+        json=error_response,
+        status=500,
+    )
+
+    # Create operation instance
     op = ListTagsOp(root_dir="test-owner/test-repo", token="fake-token")
     op._gh_repo = MagicMock()
 
-    # Create a custom exception with the expected error message
-    error_data = {"message": "Internal server error"}
-    wrapper_exception = GithubException(
-        status=500, data=f"Failed to list tags: {error_data.get('message', '')}", headers={}
-    )
-    op._gh_repo.get_tags.side_effect = wrapper_exception
+    # Mock exception
+    exception = GithubException(status=500, data=f"Failed to list tags: {error_response['message']}", headers={})
+    op._gh_repo.get_tags.side_effect = exception
 
     # Act & Assert
     with pytest.raises(GithubException) as excinfo:
@@ -222,24 +304,54 @@ async def test_list_tags_op_failure(mock_github_operation: MagicMock) -> None:
 @pytest.mark.asyncio
 @responses.activate
 async def test_list_prs_op_success(mock_github_operation: MagicMock) -> None:
-    """Test listing pull requests successfully."""
-    # Arrange
+    """Test listing pull requests successfully using responses."""
+    # Mock the GitHub API response for PRs
+    prs_response = [
+        {
+            "number": 1,
+            "title": "Add new feature",
+            "state": "open",
+            "body": "This is a new feature",
+            "user": {"login": "testuser"},
+            "created_at": "2025-05-01T00:00:00Z",
+            "updated_at": "2025-05-02T00:00:00Z",
+            "head": {"ref": "feature-branch"},
+            "base": {"ref": "main"},
+        },
+        {
+            "number": 2,
+            "title": "Fix bug",
+            "state": "open",
+            "body": "This fixes a bug",
+            "user": {"login": "anotheruser"},
+            "created_at": "2025-05-03T00:00:00Z",
+            "updated_at": "2025-05-04T00:00:00Z",
+            "head": {"ref": "bugfix-branch"},
+            "base": {"ref": "main"},
+        },
+    ]
+
+    # Add response mock for GitHub API
+    responses.add(
+        responses.GET,
+        "https://api.github.com/repos/test-owner/test-repo/pulls",
+        json=prs_response,
+        status=200,
+    )
+
+    # Create operation instance
     op = ListPRsOp(root_dir="test-owner/test-repo", token="fake-token")
     op._gh_repo = MagicMock()
 
-    # Mock data
-    mock_pr1 = MagicMock(spec=PullRequest)
-    mock_pr1.number = 1
-    mock_pr1.title = "Add new feature"
-    mock_pr1.state = "open"
+    # Mock PRs
+    mock_prs = []
+    for pr_data in prs_response:
+        mock_pr = MagicMock()
+        mock_pr.number = pr_data["number"]
+        mock_pr.title = pr_data["title"]
+        mock_pr.state = pr_data["state"]
+        mock_prs.append(mock_pr)
 
-    mock_pr2 = MagicMock(spec=PullRequest)
-    mock_pr2.number = 2
-    mock_pr2.title = "Fix bug"
-    mock_pr2.state = "open"
-
-    mock_prs = MagicMock()
-    mock_prs.__iter__.return_value = iter([mock_pr1, mock_pr2])
     op._gh_repo.get_pulls.return_value = mock_prs
 
     # Act
@@ -259,17 +371,30 @@ async def test_list_prs_op_success(mock_github_operation: MagicMock) -> None:
 @pytest.mark.asyncio
 @responses.activate
 async def test_list_prs_op_failure(mock_github_operation: MagicMock) -> None:
-    """Test handling GitHub exception when listing pull requests."""
-    # Arrange
+    """Test handling GitHub API error when listing pull requests."""
+    # Mock the GitHub API response for PRs with an error
+    error_response = {
+        "message": "Validation Failed",
+        "errors": [{"resource": "PullRequest", "field": "base", "code": "invalid"}],
+        "documentation_url": "https://docs.github.com/rest/reference/pulls#list-pull-requests",
+    }
+
+    responses.add(
+        responses.GET,
+        "https://api.github.com/repos/test-owner/test-repo/pulls",
+        json=error_response,
+        status=422,
+    )
+
+    # Create operation instance
     op = ListPRsOp(root_dir="test-owner/test-repo", token="fake-token")
     op._gh_repo = MagicMock()
 
-    # Create a custom exception with the expected error message
-    error_data = {"message": "Validation Failed"}
-    wrapper_exception = GithubException(
-        status=422, data=f"Failed to list pull requests: {error_data.get('message', '')}", headers={}
+    # Mock exception
+    exception = GithubException(
+        status=422, data=f"Failed to list pull requests: {error_response['message']}", headers={}
     )
-    op._gh_repo.get_pulls.side_effect = wrapper_exception
+    op._gh_repo.get_pulls.side_effect = exception
 
     # Act & Assert
     with pytest.raises(GithubException) as excinfo:
