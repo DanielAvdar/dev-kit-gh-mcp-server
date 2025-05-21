@@ -366,6 +366,7 @@ dev = [
     { name = "pytest-asyncio" },
     { name = "pytest-cov" },
     { name = "pytest-parametrization" },
+    { name = "python-dotenv" },
     { name = "ruff" },
 ]
 docs = [
@@ -391,6 +392,7 @@ dev = [
     { name = "pytest-asyncio", specifier = ">=0.23.5" },
     { name = "pytest-cov", specifier = ">=4.0.0" },
     { name = "pytest-parametrization", specifier = ">=2022" },
+    { name = "python-dotenv" },
     { name = "ruff", specifier = ">=0.8.2" },
 ]
 docs = [

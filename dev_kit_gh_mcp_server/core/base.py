@@ -2,6 +2,7 @@
 
 import os
 from dataclasses import dataclass, field
+from pathlib import Path
 from typing import Optional
 
 from dev_kit_mcp_server.core import AsyncOperation
@@ -45,3 +46,18 @@ class GitHubOperation(AsyncOperation):
         if len(remote_url) > 1:
             raise ValueError("Multiple remote URLs found. Use GH repo URL instead.")
         self._gh_repo = gh.get_repo(remote_url[0].url.split(":")[-1])
+
+    def root_dir_is_a_url(self):
+        return not Path(self.root_dir).exists()
+
+    def uncrooked_params(self, **kwargs):
+        """Uncrooked parameters for GitHub operations.
+
+        Args:
+            kwargs: Additional keyword arguments to pass to the operation.
+
+        Returns:
+            A dictionary of uncrooked parameters.
+
+        """
+        return {k: v for k, v in kwargs.items() if v is not None}

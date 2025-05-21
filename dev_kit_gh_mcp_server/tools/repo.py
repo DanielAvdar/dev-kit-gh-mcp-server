@@ -4,7 +4,6 @@ from dataclasses import dataclass
 from datetime import datetime
 from typing import List, Optional
 
-from github.GithubException import GithubException
 from github.Issue import Issue
 from github.PaginatedList import PaginatedList
 from github.PullRequest import PullRequest
@@ -29,8 +28,8 @@ class ListIssuesOp(GitHubOperation):
         milestone: Optional[str] = None,
     ) -> List[Issue]:
         """List issues in a GitHub repository with filtering options."""
-        try:
-            issues = self._gh_repo.get_issues(
+        issues = self._gh_repo.get_issues(
+            **self.uncrooked_params(
                 state=state,
                 labels=labels,
                 sort=sort,
@@ -40,10 +39,9 @@ class ListIssuesOp(GitHubOperation):
                 creator=creator,
                 mentioned=mentioned,
                 milestone=milestone,
-            )
-            return list(issues)
-        except GithubException as e:
-            raise GithubException(e.status, f"Failed to list issues: {e.data.get('message', '')}", e.headers) from e
+            ),
+        )
+        return list(issues)
 
 
 @dataclass
@@ -59,17 +57,16 @@ class ListCommitsOp(GitHubOperation):
         until: Optional[datetime] = None,
     ) -> PaginatedList:
         """List commits in a GitHub repository with filtering options."""
-        try:
-            commits = self._gh_repo.get_commits(
+        commits = self._gh_repo.get_commits(
+            **self.uncrooked_params(
                 sha=sha,
                 path=path,
                 author=author,
                 since=since,
                 until=until,
-            )
-            return commits
-        except GithubException as e:
-            raise GithubException(e.status, f"Failed to list commits: {e.data.get('message', '')}", e.headers) from e
+            ),
+        )
+        return commits
 
 
 @dataclass
@@ -78,11 +75,8 @@ class ListTagsOp(GitHubOperation):
 
     async def __call__(self) -> PaginatedList:
         """List all tags in a GitHub repository."""
-        try:
-            tags = self._gh_repo.get_tags()
-            return tags
-        except GithubException as e:
-            raise GithubException(e.status, f"Failed to list tags: {e.data.get('message', '')}", e.headers) from e
+        tags = self._gh_repo.get_tags()
+        return tags
 
 
 @dataclass
@@ -98,16 +92,13 @@ class ListPRsOp(GitHubOperation):
         head: Optional[str] = None,
     ) -> List[PullRequest]:
         """List pull requests in a GitHub repository with filtering options."""
-        try:
-            pulls = self._gh_repo.get_pulls(
+        pulls = self._gh_repo.get_pulls(
+            **self.uncrooked_params(
                 state=state,
                 sort=sort,
                 direction=direction,
                 base=base,
                 head=head,
-            )
-            return list(pulls)
-        except GithubException as e:
-            raise GithubException(
-                e.status, f"Failed to list pull requests: {e.data.get('message', '')}", e.headers
-            ) from e
+            ),
+        )
+        return list(pulls)
