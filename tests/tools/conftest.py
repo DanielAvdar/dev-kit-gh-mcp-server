@@ -1,5 +1,7 @@
 import pytest
 
+# import pytest_responses
+
 
 @pytest.fixture
 def repo_data():
@@ -107,6 +109,19 @@ def repo_data():
         "network_count": 0,
     }
     return repo_url, repo_api_url, repo_response
+
+
+@pytest.fixture
+def repo_resp(responses, repo_data):
+    repo_url, repo_api_url, repo_response = repo_data
+    responses.add(
+        responses.GET,
+        repo_api_url,
+        json=repo_response,
+        status=200,
+        content_type="application/json",
+    )
+    return responses
 
 
 @pytest.fixture

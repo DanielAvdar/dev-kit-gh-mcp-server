@@ -356,6 +356,7 @@ dev = [
     { name = "pytest-asyncio" },
     { name = "pytest-cov" },
     { name = "pytest-parametrization" },
+    { name = "pytest-responses" },
     { name = "python-dotenv" },
     { name = "responses" },
     { name = "ruff" },
@@ -382,6 +383,7 @@ dev = [
     { name = "pytest-asyncio", specifier = ">=0.23.5" },
     { name = "pytest-cov", specifier = ">=4.0.0" },
     { name = "pytest-parametrization", specifier = ">=2022" },
+    { name = "pytest-responses" },
     { name = "python-dotenv" },
     { name = "responses" },
     { name = "ruff", specifier = ">=0.8.2" },
@@ -1056,6 +1058,18 @@ dependencies = [
     { name = "six" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/58/43/c3459bd30ffdb9df4b23bdffa7febf141227d0a2b6701f0443f3ed7fcfb5/pytest-parametrization-2022.2.1.tar.gz", hash = "sha256:057229ad7e284fe3435a717a8a58dc5f169b3d1e5aa946d94ec591d31bd78445", size = 3734, upload-time = "2022-05-22T12:51:41.204Z" }
+
+[[package]]
+name = "pytest-responses"
+version = "0.5.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "pytest" },
+    { name = "responses" },
+]
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/c4/0a/81b8cc3cf4b6605d97ed37217af9e2f82c97ebe130f60cf85fe82edfe0e1/pytest_responses-0.5.1-py2.py3-none-any.whl", hash = "sha256:4172e565b94ac1ea3b10aba6e40855ad60cd7f141476b2d8a47e4b5f250be734", size = 6693, upload-time = "2022-10-11T17:15:40.889Z" },
+]
 
 [[package]]
 name = "python-dotenv"
