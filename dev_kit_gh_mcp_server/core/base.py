@@ -23,7 +23,7 @@ class GitHubOperation(AsyncOperation):
         },
     )
 
-    def __post_init__(self):
+    def __post_init__(self) -> None:
         """Post-initialization method to set up the GitHub repository.
 
         Raises:
@@ -56,7 +56,7 @@ class GitHubOperation(AsyncOperation):
         """
         return not Path(self.root_dir).exists()
 
-    def uncrooked_params(self, **kwargs):
+    def uncrooked_params(self, **kwargs: object) -> dict:
         """Uncrooked parameters for GitHub operations.
 
         Args:
