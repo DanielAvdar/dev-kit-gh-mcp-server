@@ -47,7 +47,13 @@ class GitHubOperation(AsyncOperation):
             raise ValueError("Multiple remote URLs found. Use GH repo URL instead.")
         self._gh_repo = gh.get_repo(remote_url[0].url.split(":")[-1])
 
-    def root_dir_is_a_url(self):
+    def root_dir_is_a_url(self) -> bool:
+        """Return True if root_dir is a URL, False if it is a local path.
+
+        Returns:
+            bool: True if root_dir is a URL, False if it is a local path.
+
+        """
         return not Path(self.root_dir).exists()
 
     def uncrooked_params(self, **kwargs):

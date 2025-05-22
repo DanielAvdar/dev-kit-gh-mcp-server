@@ -1,4 +1,4 @@
-"""Repository operations for GitHub."""
+"""GitHub repo tool module."""
 
 from dataclasses import dataclass
 from datetime import datetime
@@ -28,7 +28,12 @@ class ListIssuesOp(GitHubOperation):
         mentioned: Optional[str] = None,
         milestone: Optional[str] = None,
     ) -> List[Issue]:
-        """List issues in a GitHub repository with filtering options."""
+        """List issues in a GitHub repository with filtering options.
+
+        Returns:
+            List[Issue]: List of issues matching the filter options.
+
+        """
         issues = self._gh_repo.get_issues(
             **self.uncrooked_params(
                 state=state,
@@ -58,7 +63,12 @@ class ListCommitsOp(GitHubOperation):
         since: Optional[datetime] = None,
         until: Optional[datetime] = None,
     ) -> PaginatedList:
-        """List commits in a GitHub repository with filtering options."""
+        """List commits in a GitHub repository with filtering options.
+
+        Returns:
+            PaginatedList: List of commits matching the filter options.
+
+        """
         commits = self._gh_repo.get_commits(
             **self.uncrooked_params(
                 sha=sha,
@@ -79,7 +89,12 @@ class ListTagsOp(GitHubOperation):
         self,
         max_results: int = 10,
     ) -> PaginatedList:
-        """List all tags in a GitHub repository."""
+        """List all tags in a GitHub repository.
+
+        Returns:
+            PaginatedList: List of tags in the repository.
+
+        """
         tags = self._gh_repo.get_tags()
         return tags[:max_results]
 
@@ -97,7 +112,12 @@ class ListPRsOp(GitHubOperation):
         base: Optional[str] = None,
         head: Optional[str] = None,
     ) -> List[PullRequest]:
-        """List pull requests in a GitHub repository with filtering options."""
+        """List pull requests in a GitHub repository with filtering options.
+
+        Returns:
+            List[PullRequest]: List of pull requests matching the filter options.
+
+        """
         pulls = self._gh_repo.get_pulls(
             **self.uncrooked_params(
                 state=state,
