@@ -184,3 +184,29 @@ def prs_response():
             "base": {"ref": "main"},
         },
     ]
+
+
+@pytest.fixture
+def repo_responses(commits_response, repo_data, responses):
+    repo_url, repo_api_url, repo_response = repo_data
+    responses.add(
+        responses.GET,
+        f"https://api.github.com:443/repos/{repo_url}",
+        json=repo_response,
+        status=200,
+    )
+
+    return responses
+
+
+@pytest.fixture
+def commits_responses(commits_response, repo_data, repo_responses):
+    repo_url, repo_api_url, repo_response = repo_data
+
+    repo_responses.add(
+        repo_responses.GET,
+        f"https://api.github.com:443/repos/{repo_url}/commits",
+        json=commits_response,
+        status=200,
+    )
+    return repo_responses
