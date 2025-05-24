@@ -14,8 +14,8 @@ create branch.
 """
 
 # Repository operations
-from .issue import CreateIssueOp
-from .pr import CreatePROp
+from .issue import CreateIssueOp, ReadIssueCommentsOp, WriteIssueCommentOp
+from .pr import CreatePROp, ListPRReviewsOp, ReadPRCommentsOp, WritePRCommentOp
 from .repo import (
     ListCommitsOp,
     # CreateBranchOperation,
@@ -31,4 +31,9 @@ __all__ = [
     "ListPRsOp",
     "CreateIssueOp",
     "CreatePROp",
+    "ReadIssueCommentsOp",
+    "WriteIssueCommentOp",
+    "ReadPRCommentsOp",
+    "WritePRCommentOp",
+    "ListPRReviewsOp",
 ]

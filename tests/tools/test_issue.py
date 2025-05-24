@@ -1,6 +1,6 @@
 import pytest
 
-from dev_kit_gh_mcp_server.tools import CreateIssueOp
+from dev_kit_gh_mcp_server.tools import CreateIssueOp, ReadIssueCommentsOp
 
 
 @pytest.fixture
@@ -45,6 +45,7 @@ def issue_get_response(repo_data, repo_responses):
         issue_url_443,
         json=issue_data,
         status=200,
+        # content_type="application/json",
     )
     return repo_responses, repo_url
 
@@ -57,3 +58,13 @@ async def test_create_issue_op_success(issue_post_response):
     assert issue.title == "Test Issue"
     assert issue.body == "This is a test issue"
     assert issue.number == 42
+
+
+@pytest.mark.asyncio
+async def test_write_and_read_issue_comment(issue_get_response):
+    repo_responses, repo_url = issue_get_response
+    # comment_url = f"https://api.github.com:443/repos/{repo_url}/issues/42/comments"
+
+    read_op = ReadIssueCommentsOp(root_dir=repo_url, token="fake-token")
+    comments = await read_op(issue_number=42)
+    assert any(getattr(c, "body", None) == "Hello from test!" for c in comments)

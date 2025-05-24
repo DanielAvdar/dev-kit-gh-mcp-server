@@ -32,3 +32,33 @@ class CreatePROp(GitHubOperation):
             draft=draft,
         )
         return pr
+
+
+@dataclass
+class ReadPRCommentsOp(GitHubOperation):
+    """Operation to read comments from a GitHub pull request."""
+
+    async def __call__(self, pr_number: int) -> list:
+        """Read all comments for a given pull request number."""
+        pr = self._gh_repo.get_pull(number=pr_number)
+        return list(pr.get_comments())
+
+
+@dataclass
+class WritePRCommentOp(GitHubOperation):
+    """Operation to write a comment to a GitHub pull request."""
+
+    async def __call__(self, pr_number: int, body: str) -> object:
+        """Write a comment to the specified pull request."""
+        pr = self._gh_repo.get_pull(number=pr_number)
+        return pr.create_issue_comment(body)
+
+
+@dataclass
+class ListPRReviewsOp(GitHubOperation):
+    """Operation to list all reviews for a GitHub pull request."""
+
+    async def __call__(self, pr_number: int) -> list:
+        """Return all reviews for the specified pull request."""
+        pr = self._gh_repo.get_pull(number=pr_number)
+        return list(pr.get_reviews())
