@@ -39,7 +39,12 @@ class ReadPRCommentsOp(GitHubOperation):
     """Operation to read comments from a GitHub pull request."""
 
     async def __call__(self, pr_number: int) -> list:
-        """Read all comments for a given pull request number."""
+        """Read all comments for a given pull request number.
+
+        Returns:
+            list: A list of pull request comments.
+
+        """
         pr = self._gh_repo.get_pull(number=pr_number)
         return list(pr.get_comments())
 
@@ -49,7 +54,12 @@ class WritePRCommentOp(GitHubOperation):
     """Operation to write a comment to a GitHub pull request."""
 
     async def __call__(self, pr_number: int, body: str) -> object:
-        """Write a comment to the specified pull request."""
+        """Write a comment to the specified pull request.
+
+        Returns:
+            object: The created comment object.
+
+        """
         pr = self._gh_repo.get_pull(number=pr_number)
         return pr.create_issue_comment(body)
 
@@ -59,6 +69,11 @@ class ListPRReviewsOp(GitHubOperation):
     """Operation to list all reviews for a GitHub pull request."""
 
     async def __call__(self, pr_number: int) -> list:
-        """Return all reviews for the specified pull request."""
+        """Return all reviews for the specified pull request.
+
+        Returns:
+            list: A list of pull request reviews.
+
+        """
         pr = self._gh_repo.get_pull(number=pr_number)
         return list(pr.get_reviews())
