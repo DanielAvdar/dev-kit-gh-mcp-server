@@ -47,7 +47,48 @@ def issue_get_response(repo_data, repo_responses):
         issue_url_443,
         json=issue_data,
         status=200,
-        # content_type="application/json",
+    )
+
+    # Add mock for issue comments endpoint
+    comments_url_443 = f"https://api.github.com:443/repos/{repo_url}/issues/42/comments"
+    comments_data = [
+        {
+            "id": 1,
+            "node_id": "MDEyOklzc3VlQ29tbWVudDE=",
+            "url": f"https://api.github.com/repos/{repo_url}/issues/comments/1",
+            "html_url": f"https://github.com/{repo_url}/issues/42#issuecomment-1",
+            "body": "Hello from test!",
+            "user": {
+                "login": "octocat",
+                "id": 1,
+                "node_id": "MDQ6VXNlcjE=",
+                "avatar_url": "https://github.com/images/error/octocat_happy.gif",
+                "gravatar_id": "",
+                "url": "https://api.github.com/users/octocat",
+                "html_url": "https://github.com/octocat",
+                "followers_url": "https://api.github.com/users/octocat/followers",
+                "following_url": "https://api.github.com/users/octocat/following{/other_user}",
+                "gists_url": "https://api.github.com/users/octocat/gists{/gist_id}",
+                "starred_url": "https://api.github.com/users/octocat/starred{/owner}{/repo}",
+                "subscriptions_url": "https://api.github.com/users/octocat/subscriptions",
+                "organizations_url": "https://api.github.com/users/octocat/orgs",
+                "repos_url": "https://api.github.com/users/octocat/repos",
+                "events_url": "https://api.github.com/users/octocat/events{/privacy}",
+                "received_events_url": "https://api.github.com/users/octocat/received_events",
+                "type": "User",
+                "site_admin": False,
+            },
+            "created_at": "2011-04-14T16:00:49Z",
+            "updated_at": "2011-04-14T16:00:49Z",
+            "issue_url": f"https://api.github.com/repos/{repo_url}/issues/42",
+            "author_association": "COLLABORATOR",
+        }
+    ]
+    repo_responses.add(
+        repo_responses.GET,
+        comments_url_443,
+        json=comments_data,
+        status=200,
     )
     return repo_responses, repo_url
 
