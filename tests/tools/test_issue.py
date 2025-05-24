@@ -31,6 +31,7 @@ def issue_get_response(repo_data, repo_responses):
     """Fixture for mocked issue retrieval response."""
     repo_url, repo_api_url, repo_response = repo_data
     issue_url_443 = f"https://api.github.com:443/repos/{repo_url}/issues/42"
+    issue_url = f"https://api.github.com/repos/{repo_url}/issues/42"
     issue_data = {
         "id": 101,
         "number": 42,
@@ -38,6 +39,7 @@ def issue_get_response(repo_data, repo_responses):
         "state": "open",
         "user": {"login": "octocat"},
         "body": "This is a test issue",
+        "url": issue_url,
     }
 
     repo_responses.add(
