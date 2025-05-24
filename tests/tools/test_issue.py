@@ -1,6 +1,6 @@
 import pytest
 
-from dev_kit_gh_mcp_server.tools import CreateIssueOp, ReadIssueCommentsOp
+from dev_kit_gh_mcp_server.tools import CreateIssueOp, ReadIssueCommentsOp, WriteIssueCommentOp
 
 
 @pytest.fixture
@@ -48,6 +48,13 @@ def issue_get_response(repo_data, repo_responses):
         json=issue_data,
         status=200,
     )
+    return repo_responses, repo_url
+
+
+@pytest.fixture
+def issue_get_response_com(repo_data, issue_get_response):
+    """Fixture for mocked issue retrieval response."""
+    repo_responses, repo_url = issue_get_response
 
     # Add mock for issue comments endpoint
     comments_url_443 = f"https://api.github.com:443/repos/{repo_url}/issues/42/comments"
@@ -104,10 +111,58 @@ async def test_create_issue_op_success(issue_post_response):
 
 
 @pytest.mark.asyncio
-async def test_write_and_read_issue_comment(issue_get_response):
-    repo_responses, repo_url = issue_get_response
+async def test_write_and_read_issue_comment(issue_get_response_com):
+    repo_responses, repo_url = issue_get_response_com
     # comment_url = f"https://api.github.com:443/repos/{repo_url}/issues/42/comments"
 
     read_op = ReadIssueCommentsOp(root_dir=repo_url, token="fake-token")
     comments = await read_op(issue_number=42)
     assert any(getattr(c, "body", None) == "Hello from test!" for c in comments)
+
+
+@pytest.mark.asyncio
+async def test_write_issue_comment(issue_get_response):
+    repo_responses, repo_url = issue_get_response
+    op = WriteIssueCommentOp(root_dir=repo_url, token="fake-token")
+    # Mock the POST response for writing a comment
+    comment_url_443 = f"https://api.github.com:443/repos/{repo_url}/issues/42/comments"
+    comment_data = {
+        "id": 2,
+        "node_id": "MDEyOklzc3VlQ29tbWVudDI=",
+        "url": f"https://api.github.com/repos/{repo_url}/issues/comments/2",
+        "html_url": f"https://github.com/{repo_url}/issues/42#issuecomment-2",
+        "body": "A new comment!",
+        "user": {
+            "login": "octocat",
+            "id": 1,
+            "node_id": "MDQ6VXNlcjE=",
+            "avatar_url": "https://github.com/images/error/octocat_happy.gif",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/octocat",
+            "html_url": "https://github.com/octocat",
+            "followers_url": "https://api.github.com/users/octocat/followers",
+            "following_url": "https://api.github.com/users/octocat/following{/other_user}",
+            "gists_url": "https://api.github.com/users/octocat/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/octocat/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/octocat/subscriptions",
+            "organizations_url": "https://api.github.com/users/octocat/orgs",
+            "repos_url": "https://api.github.com/users/octocat/repos",
+            "events_url": "https://api.github.com/users/octocat/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/octocat/received_events",
+            "type": "User",
+            "site_admin": False,
+        },
+        "created_at": "2011-04-14T16:01:00Z",
+        "updated_at": "2011-04-14T16:01:00Z",
+        "issue_url": f"https://api.github.com/repos/{repo_url}/issues/42",
+        "author_association": "COLLABORATOR",
+    }
+    repo_responses.add(
+        repo_responses.POST,
+        comment_url_443,
+        json=comment_data,
+        status=201,
+    )
+    comment = await op(issue_number=42, body="A new comment!")
+    assert getattr(comment, "body", None) == "A new comment!"
+    assert getattr(comment, "id", None) == 2
