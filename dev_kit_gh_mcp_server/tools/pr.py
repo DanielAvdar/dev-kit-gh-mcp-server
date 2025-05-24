@@ -16,7 +16,7 @@ class CreatePROp(GitHubOperation):
         body: Optional[str] = None,
         head: str = None,
         base: str = None,
-        draft: bool = False,
+        draft: bool = True,
     ) -> object:
         """Create a new pull request in the repository.
 
