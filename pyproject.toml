@@ -27,6 +27,8 @@ keywords = [
     "ast",
     "tokenize"
 ]
+urls = { Homepage = "https://github.com/DanielAvdar/dev-kit-gh-mcp-server", Documentation = "https://dev-kit-gh-mcp-server.readthedocs.io/en/latest/" }
+
 dependencies = [
 
     "dev-kit-mcp-server>=0.1.1b0",
