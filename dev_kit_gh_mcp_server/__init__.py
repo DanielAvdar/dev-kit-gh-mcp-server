@@ -2,8 +2,11 @@
 
 from importlib.metadata import version
 
-from .fastmcp_server import arun_server, run_server, start_server
+from .create_server import start_server
+from .fastmcp_server import arun_server, run_server
 
-__version__ = version("dev-kit-mcp-server")
+# from .run_server import arun_server,
+
+__version__ = version("dev-kit-gh-mcp-server")
 
 __all__ = ["run_server", "start_server", "arun_server"]

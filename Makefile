@@ -39,5 +39,11 @@ doc:
 
 check-all: check test mypy doc
 
+run:
+	uvx --from pyproject.toml dev-kit-gh-mcp-server
+
+dev:
+	npx @modelcontextprotocol/inspector@latest node build/index.js
+
 vs-code:
-	uvx --from dev-kit-mcp-server dkmcp-vscode
+	uvx --from dev-kit-gh-mcp-server dkmcp-vscode

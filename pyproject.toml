@@ -37,7 +37,7 @@ dependencies = [
 ]
 
 [project.scripts]
-dev-kit-gh-mcp-server ="dev_kit_gh_mcp_server:run_server"
+dev-kit-gh-mcp-server ="dev_kit_gh_mcp_server:arun_server"
 
 [dependency-groups]
 dev = [
