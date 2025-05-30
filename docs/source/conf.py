@@ -7,15 +7,15 @@
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 import os
 import sys
-from importlib.metadata import version
+from importlib.metadata import version as metadata_version
 
 sys.path.insert(0, os.path.abspath("../../"))
 # sys.path.insert(0, os.path.abspath("./"))  # in conf.py
 
 
 project = "python-template"  # todo: change this to your project name
-version = version("my-pkg")  # todo: change my-pkg to your package name
-release = version
+version = metadata_version("dev-kit-gh_mcp_server")
+release = version  # This can be the same as version or a more specific release version
 
 copyright = "2025, DanielAvdar"  # noqa  todo: change this to your name
 author = "DanielAvdar"  # todo: change this to your name
