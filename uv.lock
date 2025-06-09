@@ -555,16 +555,16 @@ wheels = [
 
 [[package]]
 name = "hypothesis"
-version = "6.135.2"
+version = "6.135.4"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "attrs" },
     { name = "exceptiongroup", marker = "python_full_version < '3.11'" },
     { name = "sortedcontainers" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/9c/c2/37bd9f274cf2870b8764524b349175432983d65b7fd11bf01c965da95165/hypothesis-6.135.2.tar.gz", hash = "sha256:be362841e1e787a00b1712ec9d03c300d0f7d745cf18862d29903b0b5fdc3ef4", size = 449704, upload-time = "2025-06-08T02:58:18.932Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/ae/59/7022ef95715701cd90ac0cf04582e3507492ab200f370fd7ef12d80dda75/hypothesis-6.135.4.tar.gz", hash = "sha256:c63f6fc56840558c5c5e2441dd91fad1709da60bde756b816d4b89944e50a52f", size = 451895, upload-time = "2025-06-09T02:31:38.766Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/21/c4/4f661381503e2262415ec2082b42e374f705033f0e15bd6dfa5e299a203e/hypothesis-6.135.2-py3-none-any.whl", hash = "sha256:fa95b2e99066e6b06c9dc6bfcf6ebf791a880c7ab8babf0d967e2a8c2c27798d", size = 515409, upload-time = "2025-06-08T02:58:14.461Z" },
+    { url = "https://files.pythonhosted.org/packages/31/d4/25b3a9f35199eb1904967ca3e6db4afd636911fa39695760b0afac84f38a/hypothesis-6.135.4-py3-none-any.whl", hash = "sha256:6a3b13ce35d43e14aaf6a6ca4cc411e5342be5d05b77977499d07cf6a61e6e71", size = 517950, upload-time = "2025-06-09T02:31:34.463Z" },
 ]
 
 [[package]]
