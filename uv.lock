@@ -458,7 +458,7 @@ docs = [
 
 [[package]]
 name = "dev-kit-mcp-server"
-version = "0.1.4b0"
+version = "0.1.5b0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "fastmcp" },
@@ -466,9 +466,9 @@ dependencies = [
     { name = "mcp" },
     { name = "toml" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/ba/dd/313fe2b95cf5bb7f240d5e621d9a1f648a3bb86809870045935eae8b6024/dev_kit_mcp_server-0.1.4b0.tar.gz", hash = "sha256:bf38ea35f102053e20b7d34471ee6f68dec3013c20bdd0ddab60e6ba6e366cf8", size = 17208, upload-time = "2025-05-23T12:12:54.48Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/e4/14/5b78253bd8ab8048f5b0bb4c3cb18c32b029fb695311de7dba895ba7ae15/dev_kit_mcp_server-0.1.5b0.tar.gz", hash = "sha256:16e2525a276a3753a0dcce29fd99632b45c221b622890714e42b78eae8f476f5", size = 20765, upload-time = "2025-07-30T15:13:12.706Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/e4/0d/714196ec4bacec018b395e6a34964cff67c60b721254a6e29fe99985a22f/dev_kit_mcp_server-0.1.4b0-py3-none-any.whl", hash = "sha256:de17fcd07119b9bc0bc8d09a01bb95e184d2d31615292b2495f8d32efce66ddf", size = 30017, upload-time = "2025-05-23T12:12:53.073Z" },
+    { url = "https://files.pythonhosted.org/packages/ce/17/725f4a2b58066362e8b7c3b892f5b61bed7610fed1220d5c91bdf7a8a8c6/dev_kit_mcp_server-0.1.5b0-py3-none-any.whl", hash = "sha256:0faf7d21a1ca612bb390236ff5c4d33924dcfa9a7ae027e41d0b3ba96b9c8e9d", size = 36512, upload-time = "2025-07-30T15:13:11.533Z" },
 ]
 
 [[package]]
